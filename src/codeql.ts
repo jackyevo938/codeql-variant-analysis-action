@@ -21,6 +21,7 @@ async function runQuery(
 ): Promise<void> {
   const bqrs = path.join("results", "results.bqrs");
   const json = path.join("results", "results.json");
+  const sarif = path.join("results", "results.sarif");
   fs.mkdirSync("results");
   fs.writeFileSync(path.join("results", "nwo.txt"), nwo);
 
@@ -43,6 +44,16 @@ libraryPathDependencies: codeql-${language}`
     `--database=db`,
     `--output=${bqrs}`,
     queryFile,
+  ]);
+
+  await exec(codeql, [
+    "database",
+    "analyze",
+    `db`,
+    queryFile,
+    `--output=${sarif}`,
+    "--format=sarif-latest",
+    "--sarif-add-snippets",
   ]);
 
   await Promise.all([

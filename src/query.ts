@@ -58,6 +58,7 @@ async function run(): Promise<void> {
       await artifactClient.uploadArtifact(
         repo.id.toString(), // name
         [
+          "results/results.sarif",
           "results/results.bqrs",
           "results/results.csv",
           "results/results.md",
